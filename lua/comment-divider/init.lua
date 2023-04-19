@@ -17,9 +17,9 @@ M.info = function()
 	print(commentDividerInfo)
 end
 
-M.checkFiletype = function ()
-  local currFiletype = vim.api.nvim_buf_get_option(0, "filetype")
-  print("Current filetype: " .. currFiletype)
+M.checkFiletype = function()
+	local currFiletype = vim.api.nvim_buf_get_option(0, "filetype")
+	print("Current filetype: " .. currFiletype)
 end
 
 --- Generate comment divider line.
