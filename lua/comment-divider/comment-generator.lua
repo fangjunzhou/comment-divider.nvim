@@ -55,6 +55,36 @@ local function generateCommentLine(
 	return lineStr
 end
 
+local function generateSolidLine(commentLength, languageConfig, endLength, seperatorLength, startLength)
+	-- Calculate the total seperator length.
+	local totalSeperatorLength = commentLength - startLength - endLength - 2
+	local seperatorNum = math.floor(totalSeperatorLength / seperatorLength)
+	totalSeperatorLength = seperatorNum * seperatorLength
+	-- Calculate left and right space.
+	local leftSpace = math.floor((commentLength - startLength - endLength - totalSeperatorLength) / 2)
+	local rightSpace = math.floor((commentLength - startLength - endLength - totalSeperatorLength + 1) / 2)
+
+	-- Construct the solid line.
+	local lineStr = ""
+	-- Start.
+	lineStr = lineStr .. languageConfig.lineStart
+	-- Left space.
+	for i = 1, leftSpace do
+		lineStr = lineStr .. " "
+	end
+	-- Seperator.
+	for i = 1, seperatorNum do
+		lineStr = lineStr .. languageConfig.lineSeperator
+	end
+	-- Right space.
+	for i = 1, rightSpace do
+		lineStr = lineStr .. " "
+	end
+	-- End.
+	lineStr = lineStr .. languageConfig.lineEnd
+	return lineStr
+end
+
 --- Generate comment line divider.
 ---@param config table config for comment generator.
 commentGenerator.commentLine = function(config)
@@ -92,10 +122,10 @@ commentGenerator.commentLine = function(config)
 		print("Comment too long.")
 		return
 	end
-
+	local lineStr = ""
 	if bufLineLength > 0 then
 		-- Generate comment divider when bufLineLength > 0.
-		local lineStr = generateCommentLine(
+		lineStr = generateCommentLine(
 			bufLine,
 			bufLineLength,
 			commentLength,
@@ -105,7 +135,7 @@ commentGenerator.commentLine = function(config)
 			startLength
 		)
 	else
-		-- TODO: Generate a solid line.
+		lineStr = generateSolidLine(commentLength, languageConfig, endLength, seperatorLength, startLength)
 	end
 
 	-- Write line.
