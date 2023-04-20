@@ -27,6 +27,11 @@ M.commentLine = function()
 	commentGenerator.commentLine(commentConfig)
 end
 
+--- Generate comment divider box.
+M.commentBox = function()
+	commentGenerator.commentBox(commentConfig)
+end
+
 --- Reload module for development.
 M.reload = function()
 	local reload = require("plenary.reload").reload_module
