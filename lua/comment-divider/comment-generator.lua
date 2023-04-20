@@ -55,6 +55,13 @@ local function generateCommentLine(
 	return lineStr
 end
 
+--- Generate a solid divider line.
+---@param commentLength number the total length of the comment divider.
+---@param languageConfig table the language specific comment divider config.
+---@param endLength number the length of lineEnd.
+---@param seperatorLength number the length of lineSeperator.
+---@param startLength number the length of lineStart.
+---@return string lineStr the generated comment divider line.
 local function generateSolidLine(commentLength, languageConfig, endLength, seperatorLength, startLength)
 	-- Calculate the total seperator length.
 	local totalSeperatorLength = commentLength - startLength - endLength - 2
