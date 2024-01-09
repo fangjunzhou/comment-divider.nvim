@@ -1,13 +1,13 @@
 # comment-divider.nvim
 
-This project is meant to replacement the [Comment Divider](https://github.com/stackbreak/comment-divider) for VSCode in NeoVim.
+This project is meant to replace the [Comment Divider](https://github.com/stackbreak/comment-divider) for VSCode in NeoVim.
 
 ## Features
 
 - Comment divider line.
 - Comment divider box.
 - Solid divider line.
-- Automatically apply different comment divider style for different language.
+- Automatically apply different comment divider styles for different languages.
 - Check current `filetype` by `CommenDividerFileType`
 
 ### Example
@@ -26,4 +26,4 @@ std::cout << "Hello World Again!" << std::endl;
 
 ## Install
 
-Install `Fangjun-Zhou/comment-divider.nvim` from your package manager.
+Install `fangjunzhou/comment-divider.nvim` from your package manager.
