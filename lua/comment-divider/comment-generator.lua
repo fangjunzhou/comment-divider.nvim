@@ -1,7 +1,7 @@
 local commentGenerator = {}
 
 --- Generate comment divider line.
----@param bufLine string current buffer conetnt.
+---@param comment string current buffer conetnt.
 ---@param bufLineLength number the length of current buffer line.
 ---@param commentLength number the total length of the comment divider.
 ---@param languageConfig table the language specific comment divider config.
@@ -10,7 +10,7 @@ local commentGenerator = {}
 ---@param startLength number the length of lineStart.
 ---@return string lineStr the generated comment divider line.
 local function generateCommentLine(
-	bufLine,
+	comment,
 	bufLineLength,
 	commentLength,
 	languageConfig,
@@ -41,7 +41,7 @@ local function generateCommentLine(
 		lineStr = lineStr .. " "
 	end
 	-- Buffer line text.
-	lineStr = lineStr .. bufLine
+	lineStr = lineStr .. comment
 	-- Right center space.
 	for _ = 1, rightCenterSpace do
 		lineStr = lineStr .. " "
@@ -93,14 +93,14 @@ local function generateSolidLine(commentLength, languageConfig, endLength, seper
 end
 
 --- Generated a line of comment wrapped with spaces.
----@param bufLine string current buffer conetnt.
+---@param comment string current buffer conetnt.
 ---@param bufLineLength number the length of current buffer line.
 ---@param commentLength number the total length of the comment divider.
 ---@param languageConfig table the language specific comment divider config.
 ---@param endLength number the length of lineEnd.
 ---@param startLength number the length of lineStart.
 ---@return string lineStr the generated comment divider line.
-local function generateCenteredComment(bufLine, bufLineLength, commentLength, languageConfig, endLength, startLength)
+local function generateCenteredComment(comment, bufLineLength, commentLength, languageConfig, endLength, startLength)
 	-- Calculate left and righ space.
 	local leftSpace = math.floor((commentLength - startLength - endLength - bufLineLength) / 2)
 	local rightSpace = math.floor((commentLength - startLength - endLength - bufLineLength + 1) / 2)
@@ -114,7 +114,7 @@ local function generateCenteredComment(bufLine, bufLineLength, commentLength, la
 		lineStr = lineStr .. " "
 	end
 	-- Buffer line.
-	lineStr = lineStr .. bufLine
+	lineStr = lineStr .. comment
 	-- Right space.
 	for i = 1, rightSpace do
 		lineStr = lineStr .. " "
@@ -145,7 +145,7 @@ commentGenerator.commentLine = function(config)
 	local endLength = string.len(languageConfig.lineEnd)
 
 	-- Get current line.
-	local bufLine = vim.api.nvim_get_current_line()
+	local bufLine = vim.fn.input("Enter the comment here: ")
 	-- Trim all the white spaces.
 	bufLine = bufLine:gsub("^%s*(.-)%s*$", "%1")
 	if isDebug then
@@ -177,8 +177,10 @@ commentGenerator.commentLine = function(config)
 		lineStr = generateSolidLine(commentLength, languageConfig, endLength, seperatorLength, startLength)
 	end
 
-	-- Write line.
-	vim.api.nvim_set_current_line(lineStr)
+	-- Get current buffer row number.
+	local currentRow = vim.api.nvim_win_get_cursor(0)[1]
+	-- Insert lines.
+	vim.api.nvim_buf_set_lines(0, currentRow, currentRow, false, { lineStr })
 end
 
 --- Generate comment box divider.
@@ -202,7 +204,7 @@ commentGenerator.commentBox = function(config)
 	local endLength = string.len(languageConfig.lineEnd)
 
 	-- Get current line.
-	local bufLine = vim.api.nvim_get_current_line()
+	local bufLine = vim.fn.input("Enter the comment here: ")
 	-- Trim all the white spaces.
 	bufLine = bufLine:gsub("^%s*(.-)%s*$", "%1")
 	if isDebug then
@@ -239,7 +241,7 @@ commentGenerator.commentBox = function(config)
 	-- Get current buffer row number.
 	local currentRow = vim.api.nvim_win_get_cursor(0)[1]
 	-- Insert lines.
-	vim.api.nvim_buf_set_lines(0, currentRow - 1, currentRow, false, insertLines)
+	vim.api.nvim_buf_set_lines(0, currentRow, currentRow, false, insertLines)
 end
 
 return commentGenerator
