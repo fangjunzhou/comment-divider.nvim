@@ -144,9 +144,16 @@ commentGenerator.commentLine = function(config)
 	local seperatorLength = string.len(languageConfig.lineSeperator)
 	local endLength = string.len(languageConfig.lineEnd)
 
-	-- Get current line.
+	-- Start a new line.
+	-- Get current buffer row number.
+	local currentRow = vim.api.nvim_win_get_cursor(0)[1]
+	-- Insert lines.
+	vim.api.nvim_buf_set_lines(0, currentRow, currentRow, false, { "" })
+	vim.api.nvim_win_set_cursor(0, { currentRow + 1, 0 })
+
 	vim.ui.input({ prompt = "Enter the comment here: " }, function(comment)
 		if comment == nil then
+			vim.api.nvim_buf_set_lines(0, currentRow, currentRow + 1, false, {})
 			return
 		end
 		-- Trim all the white spaces.
@@ -181,9 +188,9 @@ commentGenerator.commentLine = function(config)
 		end
 
 		-- Get current buffer row number.
-		local currentRow = vim.api.nvim_win_get_cursor(0)[1]
+		currentRow = vim.api.nvim_win_get_cursor(0)[1]
 		-- Insert lines.
-		vim.api.nvim_buf_set_lines(0, currentRow, currentRow, false, { lineStr })
+		vim.api.nvim_buf_set_lines(0, currentRow - 1, currentRow, false, { lineStr })
 	end)
 end
 
@@ -207,9 +214,16 @@ commentGenerator.commentBox = function(config)
 	local seperatorLength = string.len(languageConfig.lineSeperator)
 	local endLength = string.len(languageConfig.lineEnd)
 
-	-- Get current line.
+	-- Start a new line.
+	-- Get current buffer row number.
+	local currentRow = vim.api.nvim_win_get_cursor(0)[1]
+	-- Insert lines.
+	vim.api.nvim_buf_set_lines(0, currentRow, currentRow, false, { "" })
+	vim.api.nvim_win_set_cursor(0, { currentRow + 1, 0 })
+
 	vim.ui.input({ prompt = "Enter the comment here: " }, function(comment)
 		if comment == nil then
+			vim.api.nvim_buf_set_lines(0, currentRow, currentRow + 1, false, {})
 			return
 		end
 		-- Trim all the white spaces.
@@ -252,9 +266,9 @@ commentGenerator.commentBox = function(config)
 		)
 
 		-- Get current buffer row number.
-		local currentRow = vim.api.nvim_win_get_cursor(0)[1]
+		currentRow = vim.api.nvim_win_get_cursor(0)[1]
 		-- Insert lines.
-		vim.api.nvim_buf_set_lines(0, currentRow, currentRow, false, insertLines)
+		vim.api.nvim_buf_set_lines(0, currentRow - 1, currentRow, false, insertLines)
 	end)
 end
 
