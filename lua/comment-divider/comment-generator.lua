@@ -145,42 +145,46 @@ commentGenerator.commentLine = function(config)
 	local endLength = string.len(languageConfig.lineEnd)
 
 	-- Get current line.
-	local bufLine = vim.fn.input("Enter the comment here: ")
-	-- Trim all the white spaces.
-	bufLine = bufLine:gsub("^%s*(.-)%s*$", "%1")
-	if isDebug then
-		print("Current buffer line: " .. bufLine)
-	end
-	-- The length of current buffer line.
-	local bufLineLength = bufLine:len()
+	vim.ui.input({ prompt = "Enter the comment here: " }, function(comment)
+		if comment == nil then
+			return
+		end
+		-- Trim all the white spaces.
+		comment = comment:gsub("^%s*(.-)%s*$", "%1")
+		if isDebug then
+			print("Current buffer line: " .. comment)
+		end
+		-- The length of current buffer line.
+		local bufLineLength = comment:len()
 
-	-- Calculate how many characters are needed for minimum seperator.
-	-- /* - text - */
-	local minSeperatorLength = startLength + endLength + 2 * seperatorLength + 4
-	if bufLineLength + minSeperatorLength > commentLength then
-		print("Comment too long.")
-		return
-	end
-	local lineStr = ""
-	if bufLineLength > 0 then
-		-- Generate comment divider when bufLineLength > 0.
-		lineStr = generateCommentLine(
-			bufLine,
-			bufLineLength,
-			commentLength,
-			languageConfig,
-			endLength,
-			seperatorLength,
-			startLength
-		)
-	else
-		lineStr = generateSolidLine(commentLength, languageConfig, endLength, seperatorLength, startLength)
-	end
+		-- Calculate how many characters are needed for minimum seperator.
+		-- /* - text - */
+		local minSeperatorLength = startLength + endLength + 2 * seperatorLength + 4
+		if bufLineLength + minSeperatorLength > commentLength then
+			print("Comment too long.")
+			return
+		end
+		local lineStr = ""
+		if bufLineLength > 0 then
+			-- Generate comment divider when bufLineLength > 0.
+			lineStr = generateCommentLine(
+				comment,
+				bufLineLength,
+				commentLength,
+				languageConfig,
+				endLength,
+				seperatorLength,
+				startLength
+			)
+		else
+			lineStr = generateSolidLine(commentLength, languageConfig, endLength, seperatorLength, startLength)
+		end
 
-	-- Get current buffer row number.
-	local currentRow = vim.api.nvim_win_get_cursor(0)[1]
-	-- Insert lines.
-	vim.api.nvim_buf_set_lines(0, currentRow, currentRow, false, { lineStr })
+		-- Get current buffer row number.
+		local currentRow = vim.api.nvim_win_get_cursor(0)[1]
+		-- Insert lines.
+		vim.api.nvim_buf_set_lines(0, currentRow, currentRow, false, { lineStr })
+	end)
 end
 
 --- Generate comment box divider.
@@ -204,44 +208,54 @@ commentGenerator.commentBox = function(config)
 	local endLength = string.len(languageConfig.lineEnd)
 
 	-- Get current line.
-	local bufLine = vim.fn.input("Enter the comment here: ")
-	-- Trim all the white spaces.
-	bufLine = bufLine:gsub("^%s*(.-)%s*$", "%1")
-	if isDebug then
-		print("Current buffer line: " .. bufLine)
-	end
-	-- The length of current buffer line.
-	local bufLineLength = bufLine:len()
+	vim.ui.input({ prompt = "Enter the comment here: " }, function(comment)
+		if comment == nil then
+			return
+		end
+		-- Trim all the white spaces.
+		comment = comment:gsub("^%s*(.-)%s*$", "%1")
+		if isDebug then
+			print("Current buffer line: " .. comment)
+		end
+		-- The length of current buffer line.
+		local bufLineLength = comment:len()
 
-	-- Calculate how many characters are needed for minimum seperator.
-	-- /* - text - */
-	local minSeperatorLength = startLength + endLength + 2 * seperatorLength + 4
-	if bufLineLength + minSeperatorLength > commentLength then
-		print("Comment too long.")
-		return
-	end
-	-- If the current buffer line is empty, reject the request.
-	if bufLineLength == 0 then
-		print("Empty line.")
-		return
-	end
+		-- Calculate how many characters are needed for minimum seperator.
+		-- /* - text - */
+		local minSeperatorLength = startLength + endLength + 2 * seperatorLength + 4
+		if bufLineLength + minSeperatorLength > commentLength then
+			print("Comment too long.")
+			return
+		end
+		-- If the current buffer line is empty, reject the request.
+		if bufLineLength == 0 then
+			print("Empty line.")
+			return
+		end
 
-	-- Insert lines.
-	local insertLines = {}
-	-- Top solid line.
-	table.insert(insertLines, generateSolidLine(commentLength, languageConfig, endLength, seperatorLength, startLength))
-	-- Wrapped comment.
-	table.insert(
-		insertLines,
-		generateCenteredComment(bufLine, bufLineLength, commentLength, languageConfig, endLength, startLength)
-	)
-	-- End solid line.
-	table.insert(insertLines, generateSolidLine(commentLength, languageConfig, endLength, seperatorLength, startLength))
+		-- Insert lines.
+		local insertLines = {}
+		-- Top solid line.
+		table.insert(
+			insertLines,
+			generateSolidLine(commentLength, languageConfig, endLength, seperatorLength, startLength)
+		)
+		-- Wrapped comment.
+		table.insert(
+			insertLines,
+			generateCenteredComment(comment, bufLineLength, commentLength, languageConfig, endLength, startLength)
+		)
+		-- End solid line.
+		table.insert(
+			insertLines,
+			generateSolidLine(commentLength, languageConfig, endLength, seperatorLength, startLength)
+		)
 
-	-- Get current buffer row number.
-	local currentRow = vim.api.nvim_win_get_cursor(0)[1]
-	-- Insert lines.
-	vim.api.nvim_buf_set_lines(0, currentRow, currentRow, false, insertLines)
+		-- Get current buffer row number.
+		local currentRow = vim.api.nvim_win_get_cursor(0)[1]
+		-- Insert lines.
+		vim.api.nvim_buf_set_lines(0, currentRow, currentRow, false, insertLines)
+	end)
 end
 
 return commentGenerator
