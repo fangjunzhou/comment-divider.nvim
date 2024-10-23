@@ -168,6 +168,7 @@ commentGenerator.commentLine = function(config)
 		-- /* - text - */
 		local minSeperatorLength = startLength + endLength + 2 * seperatorLength + 4
 		if bufLineLength + minSeperatorLength > commentLength then
+			vim.api.nvim_buf_set_lines(0, currentRow, currentRow + 1, false, {})
 			print("Comment too long.")
 			return
 		end
@@ -238,11 +239,13 @@ commentGenerator.commentBox = function(config)
 		-- /* - text - */
 		local minSeperatorLength = startLength + endLength + 2 * seperatorLength + 4
 		if bufLineLength + minSeperatorLength > commentLength then
+			vim.api.nvim_buf_set_lines(0, currentRow, currentRow + 1, false, {})
 			print("Comment too long.")
 			return
 		end
 		-- If the current buffer line is empty, reject the request.
 		if bufLineLength == 0 then
+			vim.api.nvim_buf_set_lines(0, currentRow, currentRow + 1, false, {})
 			print("Empty line.")
 			return
 		end
