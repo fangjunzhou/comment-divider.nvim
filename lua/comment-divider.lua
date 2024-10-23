@@ -10,16 +10,17 @@ M.setup = function(config)
 	commentConfig = vim.tbl_deep_extend("force", commentConfig, config or {})
 end
 
---- Function for plugin information.
+--- Display plugin config info.
 M.info = function()
-	local commentDividerInfo = "Comment Divider for NeoVim"
+	local commentDividerInfo = "Current comment divider config:"
 	commentDividerInfo = commentDividerInfo .. "\n" .. vim.inspect(commentConfig)
 	print(commentDividerInfo)
 end
 
-M.checkFiletype = function()
+--- Display filetype for current buffer.
+M.filetype = function()
 	local currFiletype = vim.api.nvim_buf_get_option(0, "filetype")
-	print("Current filetype: " .. currFiletype)
+	print("Current buffer filetype: " .. currFiletype)
 end
 
 --- Generate comment divider line.
