@@ -4,10 +4,10 @@
   <img alt="comment-divider.nvim" src="assets/wordmark-light.svg" width="524" height="120">
 </picture>
 
-https://github.com/user-attachments/assets/0bd0e917-7990-48c7-b9ea-5a473c0c5046
-
 Add comment dividers and boxes in Neovim, inspired by the VSCode
 [Comment Divider](https://github.com/stackbreak/comment-divider) extension.
+
+https://github.com/user-attachments/assets/0bd0e917-7990-48c7-b9ea-5a473c0c5046
 
 ## Get Started
 
@@ -23,21 +23,19 @@ return {
     "fangjunzhou/comment-divider.nvim",
     main = "comment-divider",
     cmd = "CommentDivider",
-    opts = {
-      maxLineWidth = 64,
-    },
   },
 }
 ```
 
 LazyVim loads the plugin when you run `:CommentDivider` and passes `opts` to
-`setup()`. Remove `maxLineWidth` to use the default of 80.
+`setup()`.
 
 #### Nixvim
 
 Add this to your [Nixvim configuration](https://nix-community.github.io/nixvim/user-guide/faq.html#how-do-i-use-a-plugin-not-packaged-in-nixpkgs).
 Replace `REVISION` with a commit hash and `SHA256` with its Nix source hash.
-For NixOS or Home Manager, put these options under `programs.nixvim`.
+
+For example, to add `v1.0.0`, put these options under `programs.nixvim` in NixOS or Home Manager.
 
 ```nix
 { pkgs, ... }:
@@ -45,12 +43,12 @@ For NixOS or Home Manager, put these options under `programs.nixvim`.
   extraPlugins = [
     (pkgs.vimUtils.buildVimPlugin {
       pname = "comment-divider.nvim";
-      version = "unstable";
+      version = "1.0.0";
       src = pkgs.fetchFromGitHub {
         owner = "fangjunzhou";
         repo = "comment-divider.nvim";
-        rev = "REVISION";
-        hash = "SHA256";
+        rev = "v1.0.0";
+        hash = "sha256-fVTyOlmHFTc1DTaClYxB0MPVWhwvh8ggDaGdnixWh7Y=";
       };
     })
   ];
@@ -59,14 +57,6 @@ For NixOS or Home Manager, put these options under `programs.nixvim`.
     require("comment-divider").setup({})
   '';
 }
-```
-
-#### Local Checkout
-
-From the repository root:
-
-```sh
-nvim --clean --cmd "set runtimepath+=."
 ```
 
 ### Usage
