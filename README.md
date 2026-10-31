@@ -4,7 +4,7 @@
   <img alt="comment-divider.nvim" src="assets/wordmark-light.svg" width="524" height="120">
 </picture>
 
-[Demo video](assets/demo.mp4)
+https://github.com/user-attachments/assets/0bd0e917-7990-48c7-b9ea-5a473c0c5046
 
 Add comment dividers and boxes in Neovim, inspired by the VSCode
 [Comment Divider](https://github.com/stackbreak/comment-divider) extension.
