@@ -1,5 +1,7 @@
 # comment-divider.nvim
 
+[Demo video](assets/demo.mp4)
+
 Add comment dividers and boxes in Neovim, inspired by the VSCode
 [Comment Divider](https://github.com/stackbreak/comment-divider) extension.
 

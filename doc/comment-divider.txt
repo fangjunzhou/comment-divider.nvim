@@ -11,6 +11,8 @@ Table of Contents                          *comment-divider-table-of-contents*
 ==============================================================================
 1. comment-divider.nvim                 *comment-divider-comment-divider.nvim*
 
+Demo video <assets/demo.mp4>
+
 Add comment dividers and boxes in Neovim, inspired by the VSCode Comment
 Divider <https://github.com/stackbreak/comment-divider> extension.
 
