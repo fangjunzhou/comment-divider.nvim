@@ -1,4 +1,8 @@
-# comment-divider.nvim
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/wordmark-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/wordmark-light.svg">
+  <img alt="comment-divider.nvim" src="assets/wordmark-light.svg" width="524" height="120">
+</picture>
 
 [Demo video](assets/demo.mp4)
 

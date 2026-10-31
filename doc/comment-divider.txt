@@ -3,13 +3,10 @@
 ==============================================================================
 Table of Contents                          *comment-divider-table-of-contents*
 
-1. comment-divider.nvim                 |comment-divider-comment-divider.nvim|
-  - Get Started             |comment-divider-comment-divider.nvim-get-started|
-  - Development             |comment-divider-comment-divider.nvim-development|
-  - License                     |comment-divider-comment-divider.nvim-license|
+  - Get Started                                  |comment-divider-get-started|
+  - Development                                  |comment-divider-development|
+  - License                                          |comment-divider-license|
 
-==============================================================================
-1. comment-divider.nvim                 *comment-divider-comment-divider.nvim*
 
 Demo video <assets/demo.mp4>
 
@@ -17,7 +14,7 @@ Add comment dividers and boxes in Neovim, inspired by the VSCode Comment
 Divider <https://github.com/stackbreak/comment-divider> extension.
 
 
-GET STARTED                 *comment-divider-comment-divider.nvim-get-started*
+GET STARTED                                      *comment-divider-get-started*
 
 
 INSTALLATION ~
@@ -205,13 +202,13 @@ The Lua API also exposes `commentLine()`, `commentBox()`, `info()`, and
 <
 
 
-DEVELOPMENT                 *comment-divider-comment-divider.nvim-development*
+DEVELOPMENT                                      *comment-divider-development*
 
 See AGENTS.md <AGENTS.md> for requirements, commands, and contribution
 guidelines.
 
 
-LICENSE                         *comment-divider-comment-divider.nvim-license*
+LICENSE                                              *comment-divider-license*
 
 MIT. See LICENSE <LICENSE>.
 
