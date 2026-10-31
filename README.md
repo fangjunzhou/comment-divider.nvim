@@ -1,5 +1,7 @@
 # comment-divider.nvim
 
+https://github.com/user-attachments/assets/73103a2c-ba39-4349-b488-b6f3585042b7
+
 Comment divider lines and boxes for Neovim, inspired by the VSCode
 [Comment Divider](https://github.com/stackbreak/comment-divider) extension.
 There are no runtime dependencies. Styles are selected by buffer filetype.
