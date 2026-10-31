@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eu
+
+cd "$(git rev-parse --show-toplevel)"
+
+nix fmt -- --check
+nix run .#test
+nix run .#docs
+
+if ! git ls-files --error-unmatch doc/comment-divider.txt >/dev/null 2>&1 ||
+  ! git diff --quiet -- doc/comment-divider.txt; then
+  printf '%s\n' "Help file updated. Stage doc/comment-divider.txt and commit again." >&2
+  exit 1
+fi

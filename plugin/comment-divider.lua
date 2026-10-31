@@ -1,19 +1,24 @@
+if vim.g.loaded_comment_divider then
+  return
+end
+vim.g.loaded_comment_divider = true
+
 -- Comment divider line.
 vim.api.nvim_create_user_command("CommentDividerLine", function()
-	require("comment-divider").commentLine()
+  require("comment-divider").commentLine()
 end, { nargs = 0 })
 
 -- Comment divider box.
 vim.api.nvim_create_user_command("CommentDividerBox", function()
-	require("comment-divider").commentBox()
+  require("comment-divider").commentBox()
 end, { nargs = 0 })
 
 -- Show current config.
 vim.api.nvim_create_user_command("CommentDividerConfigInfo", function()
-	require("comment-divider").info()
+  require("comment-divider").info()
 end, { nargs = 0 })
 
--- Check current filetype.
+-- Copy current filetype to the clipboard.
 vim.api.nvim_create_user_command("CommentDividerFiletype", function()
-	require("comment-divider").filetype()
+  require("comment-divider").filetype()
 end, { nargs = 0 })

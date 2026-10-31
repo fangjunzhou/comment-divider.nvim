@@ -40,3 +40,13 @@ luac.out
 *.hex
 
 .direnv
+
+# Neovim logs and generated help tags
+.nvimlog
+nvim.log
+doc/tags
+
+# Nix build results and macOS metadata
+result
+result-*
+.DS_Store
