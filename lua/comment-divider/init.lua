@@ -4,10 +4,26 @@ local commentGenerator = require("comment-divider.comment-generator")
 local M = {}
 
 --- Setup function for package managers.
----@param config table config for setup.
+---@param config? CommentDividerOptions Options to merge into the current configuration.
 M.setup = function(config)
-  -- Merge config.
-  commentConfig = vim.tbl_deep_extend("force", commentConfig, config or {})
+  local options = config or {}
+  local function check_keys(values, allowed)
+    for key in pairs(values) do
+      if not allowed[key] then
+        error("Unknown comment-divider option: " .. tostring(key), 3)
+      end
+    end
+  end
+
+  check_keys(options, { maxLineWidth = true, defaultStyle = true, filetypeStyles = true })
+  local style_keys = { lineStart = true, barrierCharacter = true, lineEnd = true }
+  if options.defaultStyle then
+    check_keys(options.defaultStyle, style_keys)
+  end
+  for _, style in pairs(options.filetypeStyles or {}) do
+    check_keys(style, style_keys)
+  end
+  commentConfig = vim.tbl_deep_extend("force", commentConfig, options)
 end
 
 --- Display plugin config info.

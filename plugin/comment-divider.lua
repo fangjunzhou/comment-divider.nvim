@@ -3,22 +3,27 @@ if vim.g.loaded_comment_divider then
 end
 vim.g.loaded_comment_divider = true
 
--- Comment divider line.
-vim.api.nvim_create_user_command("CommentDividerLine", function()
-  require("comment-divider").commentLine()
-end, { nargs = 0 })
+local actions = {
+  line = "commentLine",
+  box = "commentBox",
+  filetype = "filetype",
+  status = "info",
+}
 
--- Comment divider box.
-vim.api.nvim_create_user_command("CommentDividerBox", function()
-  require("comment-divider").commentBox()
-end, { nargs = 0 })
-
--- Show current config.
-vim.api.nvim_create_user_command("CommentDividerConfigInfo", function()
-  require("comment-divider").info()
-end, { nargs = 0 })
-
--- Copy current filetype to the clipboard.
-vim.api.nvim_create_user_command("CommentDividerFiletype", function()
-  require("comment-divider").filetype()
-end, { nargs = 0 })
+vim.api.nvim_create_user_command("CommentDivider", function(opts)
+  local action = actions[opts.args]
+  if not action then
+    vim.notify("Unknown CommentDivider subcommand: " .. opts.args, vim.log.levels.ERROR)
+    return
+  end
+  require("comment-divider")[action]()
+end, {
+  nargs = 1,
+  complete = function(arg_lead)
+    local matches = vim.tbl_filter(function(name)
+      return vim.startswith(name, arg_lead)
+    end, vim.tbl_keys(actions))
+    table.sort(matches)
+    return matches
+  end,
+})

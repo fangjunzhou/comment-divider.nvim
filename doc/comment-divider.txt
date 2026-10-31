@@ -11,12 +11,8 @@ Table of Contents                          *comment-divider-table-of-contents*
 ==============================================================================
 1. comment-divider.nvim                 *comment-divider-comment-divider.nvim*
 
-
-https://github.com/user-attachments/assets/73103a2c-ba39-4349-b488-b6f3585042b7
-
-Comment divider lines and boxes for Neovim, inspired by the VSCode Comment
-Divider <https://github.com/stackbreak/comment-divider> extension. There are no
-runtime dependencies. Styles are selected by buffer filetype.
+Add comment dividers and boxes in Neovim, inspired by the VSCode Comment
+Divider <https://github.com/stackbreak/comment-divider> extension.
 
 
 GET STARTED                 *comment-divider-comment-divider.nvim-get-started*
@@ -27,23 +23,23 @@ INSTALLATION ~
 
 LAZYVIM
 
-Create `~/.config/nvim/lua/plugins/comment-divider.lua` with this plugin spec
-<https://www.lazyvim.org/configuration/plugins>:
+Add this to `~/.config/nvim/lua/plugins/comment-divider.lua`:
 
 >lua
     return {
       {
         "fangjunzhou/comment-divider.nvim",
-        cmd = {
-          "CommentDividerLine",
-          "CommentDividerBox",
-          "CommentDividerConfigInfo",
-          "CommentDividerFiletype",
+        main = "comment-divider",
+        cmd = "CommentDivider",
+        opts = {
+          maxLineWidth = 64,
         },
-        opts = {},
       },
     }
 <
+
+LazyVim loads the plugin when you run `:CommentDivider` and passes `opts` to
+`setup()`. Remove `maxLineWidth` to use the default of 80.
 
 
 NIXVIM
@@ -87,24 +83,68 @@ From the repository root:
 
 USAGE ~
 
-- `:CommentDividerLine` prompts for text and inserts a divider below the cursor.
-    Submit empty text for a solid line.
-- `:CommentDividerBox` prompts for text and inserts a three-line box below the cursor.
-- `:CommentDividerConfigInfo` displays the current configuration.
-- `:CommentDividerFiletype` copies the current buffer filetype to the clipboard
-    and displays an informational notification.
+- `:CommentDivider line` adds a divider below the current line. Leave the prompt
+    empty for a divider without text.
+- `:CommentDivider box` adds a three-line box below the current line.
+- `:CommentDivider status` shows your settings.
+- `:CommentDivider filetype` copies the current file type to the clipboard and
+    shows it on screen.
 
-Cancel the prompt to leave the buffer unchanged. Text is trimmed; text that is
-too long is rejected. Boxes require nonempty text.
+Press Tab after `:CommentDivider` to see the options.
+
+These examples use C++ comments and `maxLineWidth = 64`. The divider appears
+below the line where your cursor is.
+
+
+DIVIDER WITH TEXT
+
+Run `:CommentDivider line` and enter `Hello`:
 
 >cpp
-    /* --------------------- Print Hello World --------------------- */
-    std::cout << "Hello World!" << std::endl;
-
-    /* ------------------------------------------------------------ */
-    /*                   Print Hello World Again                    */
-    /* ------------------------------------------------------------ */
+    do_work();
+    /* ------------------------- Hello  ------------------------- */
 <
+
+
+DIVIDER WITHOUT TEXT
+
+Run `:CommentDivider line` and press Enter without typing anything:
+
+>cpp
+    do_work();
+    /* ---------------------------------------------------------- */
+<
+
+
+BOX
+
+Run `:CommentDivider box` and enter `Hello`:
+
+>cpp
+    do_work();
+    /* ---------------------------------------------------------- */
+    /*                           Hello                            */
+    /* ---------------------------------------------------------- */
+<
+
+
+DIVIDER WITH INDENTATION
+
+Comment divider will automatically adapt to the configured max line width with
+indentation.
+
+>cpp
+    /* ------------------------- Hello  ------------------------- */
+    void run() {
+        do_work();
+        /* ----------------------- Hello  ----------------------- */
+    }
+<
+
+Neovim sets the indentation, which counts toward the width (four spaces leave
+60 columns above). Extra spaces around text are removed. Canceling changes
+nothing; text that does not fit shows `Comment too long.` instead of a divider.
+Boxes need text.
 
 
 CONFIGURATION ~
@@ -113,26 +153,41 @@ Setup is optional. These are the defaults:
 
 >lua
     require("comment-divider").setup({
-      debug = true,
-      commentLength = 64,
-      defaultConfig = {
+      maxLineWidth = 80,
+      defaultStyle = {
         lineStart = "/*",
-        lineSeperator = "-",
+        barrierCharacter = "-",
         lineEnd = "*/",
       },
-      languageConfig = {
-        cpp = { lineStart = "/*", lineSeperator = "-", lineEnd = "*/" },
-        python = { lineStart = "#", lineSeperator = "-", lineEnd = "#" },
-        lua = { lineStart = "--", lineSeperator = "-", lineEnd = "--" },
+      filetypeStyles = {
+        cpp = { lineStart = "/*", barrierCharacter = "-", lineEnd = "*/" },
+        python = { lineStart = "#", barrierCharacter = "-", lineEnd = "#" },
+        lua = { lineStart = "--", barrierCharacter = "-", lineEnd = "--" },
       },
     })
 <
 
-`setup()` deep-merges options into the current configuration. Other filetypes
-use `defaultConfig`. Set `debug = false` to silence diagnostic messages. Widths
-are measured in bytes, not display columns. Use a positive `commentLength`
-large enough for the delimiters and text, and a nonempty `lineSeperator`. The
-spelling `lineSeperator` is part of the existing configuration API.
+Other file types use `defaultStyle`. `maxLineWidth` counts on-screen columns,
+including indentation. `barrierCharacter` must not be empty. Debug messages use
+Neovim’s DEBUG notification level.
+
+For HTML, use its `<!-- ... -->` comment markers with `-` barriers:
+
+>lua
+    require("comment-divider").setup({
+      filetypeStyles = {
+        html = { lineStart = "<!--", barrierCharacter = "-", lineEnd = "-->" },
+      },
+    })
+<
+
+At the default width of 80, entering `Hello` in an HTML buffer produces:
+
+>html
+    <!-- -------------------------------- Hello -------------------------------- -->
+<
+
+The existing styles stay unchanged.
 
 The Lua API also exposes `commentLine()`, `commentBox()`, `info()`, and
 `filetype()`:

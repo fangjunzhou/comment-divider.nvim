@@ -14,10 +14,11 @@ This is a Lua Neovim plugin with no runtime dependencies. Keep the public API in
 generation in `lua/comment-divider/comment-generator.lua`, commands in `plugin/`,
 and Plenary/Busted tests in `tests/` using `*_spec.lua` filenames.
 
-Preserve the existing camelCase Lua API, configuration keys (including
-`lineSeperator`), command names, and cumulative `setup()` semantics. Use snake_case
-for new private functions and variables. The `reload()` development helper clears
-the plugin modules without requiring Plenary; it resets configuration on next load.
+Preserve the existing camelCase Lua API, current configuration keys,
+`CommentDivider` subcommands, and cumulative `setup()` semantics. Do not
+reintroduce removed configuration aliases. Use snake_case for new private
+functions and variables. The `reload()` development helper clears the plugin
+modules without requiring Plenary; it resets configuration on next load.
 
 Keep README.md user-facing: installation, configuration, and usage. Document
 development processes and requirements here, updating this file when they change.
